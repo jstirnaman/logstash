@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# Rake tasks to start/stop Logstash
+#
+# This is essentially a modified copy of the solr.rake
+# which is distributed alongside acts_as_solr
+require 'rubygems'
+require 'rake'
+require 'net/http'
+require 'rbconfig'
+
+namespace :logstash do
+
+  desc 'Starts Logstash. Options accepted: RAILS_ENV=your_env, PORT=XX. Defaults to development if none.'
+  task :start do
+    begin
+      # Startup Logstash with conf file
+      LOGSTASH_PATH = "logstash-1.1.9-monolithic.jar"
+      CONF_PATH = "./config/"
+      CONF_FILE = ENV["CONF"] || "logstash-simple.conf"
+      conf = CONF_PATH + CONF_FILE
+      puts "Using config = #{conf}"
+      puts "Starting Logstash" 
+      exec "java -jar #{LOGSTASH_PATH} agent -f #{conf} -- web --backend elasticsearch:///?local"
+    end
+  end
+end 
