@@ -14,13 +14,13 @@ namespace :logstash do
   task :start do
     begin
       # Startup Logstash with conf file
-      LOGSTASH_PATH = "logstash-1.1.9-monolithic.jar"
+      LOGSTASH_PATH = "logstash-1.1.11.dev-flatjar.jar"
       CONF_PATH = "./config/"
       CONF_FILE = ENV["CONF"] || "logstash-simple.conf"
       conf = CONF_PATH + CONF_FILE
       puts "Using config = #{conf}"
       puts "Starting Logstash" 
-      exec "java -jar #{LOGSTASH_PATH} agent -f #{conf} -- web --backend elasticsearch:///?local"
+      exec "java -jar #{LOGSTASH_PATH} agent -v -f #{CONF_PATH}#{CONF_FILE}"
     end
   end
 end 
