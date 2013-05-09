@@ -1,3 +1,4 @@
 data
 .sincedb
 .sass-cache
+config/*.conf
