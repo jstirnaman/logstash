@@ -9,8 +9,8 @@ require 'net/http'
 require 'rbconfig'
 
 namespace :logstash do
-
-  desc 'Starts Logstash. Options accepted: RAILS_ENV=your_env, PORT=XX. Defaults to development if none.'
+  # See http://cookbook.logstash.net/recipes/using-upstart/ for running logstash as a service.
+  desc 'Starts Logstash. Options accepted: CONF=your_logstash_config, RAILS_ENV=your_env, PORT=XX. Defaults to development if none.'
   task :start do
     begin
       # Startup Logstash with conf file
@@ -20,7 +20,7 @@ namespace :logstash do
       conf = CONF_PATH + CONF_FILE
       puts "Using config = #{conf}"
       puts "Starting Logstash" 
-      exec "java -jar #{LOGSTASH_PATH} agent -v -f #{CONF_PATH}#{CONF_FILE}"
+      exec "java -jar #{LOGSTASH_PATH} agent -v -f #{CONF_PATH}#{CONF_FILE} -l agent-log/agent-ezproxy.log"
     end
   end
 end 
