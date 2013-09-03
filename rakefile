@@ -12,15 +12,37 @@ namespace :logstash do
   # See http://cookbook.logstash.net/recipes/using-upstart/ for running logstash as a service.
   desc 'Starts Logstash. Options accepted: CONF=your_logstash_config, RAILS_ENV=your_env, PORT=XX. Defaults to development if none.'
   task :start do
-    begin
-      # Startup Logstash with conf file
       LOGSTASH_PATH = "logstash-1.1.12-flatjar.jar"
       CONF_PATH = "./config/"
-      CONF_FILE = ENV["CONF"] || "logstash-simple.conf"
+      CONF_FILE = ENV["CONF"] || "ezproxy.conf"
+      LOGSTASH_LOGPATH = "./agent-log/"
+      LOGSTASH_LOGFILE = "logstash.log"
+    #begin
+    #    puts "Loading ElasticSearch index template."
+    #    exec "sh #{CONF_PATH}es_templates/default_template.sh"
+    #    puts "Loaded index template."
+    #rescue Exception => e
+    #  puts e.inspect
+    #end
+    begin
+      pid = start_logstash
+      Process.detach pid
+    rescue Exception => e
+        puts e.inspect
+    end
+  end
+
+  def start_logstash
+       # Startup Logstash with conf file
       conf = CONF_PATH + CONF_FILE
       puts "Using config = #{conf}"
-      puts "Starting Logstash" 
-      exec "java -jar #{LOGSTASH_PATH} agent -v -f #{CONF_PATH}#{CONF_FILE} -l agent-log/agent-ezproxy.log"
-    end
+      puts "Starting Logstash"
+      cmd = "java -jar #{LOGSTASH_PATH} agent -v -f #{CONF_PATH}#{CONF_FILE} -l #{LOGSTASH_LOGPATH}#{LOGSTASH_LOGFILE}"
+      puts cmd
+      pid = Process.spawn(cmd) 
+      puts "Logstash started with pid #{pid.to_s}"
+      pid
+    rescue e
+      puts e.inspect
   end
 end 
