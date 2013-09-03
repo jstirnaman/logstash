@@ -1,3 +1,5 @@
 data
 .sincedb
 .sass-cache
+files/*
+agent-log/*
