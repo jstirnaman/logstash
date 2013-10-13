@@ -1,6 +1,6 @@
 # Query two days of indexes and return all docs with timestamp in a 24-hour period.
 # For pretty indented output, _search?pretty=true
-curl -XGET http://libraryweb.kumc.edu:9200/logstash-2013.09.03,logstash-2013.09.02/_search? -d'
+curl -XGET http://libraryweb.kumc.edu:9200/logstash-2013.09.06,logstash-2013.09.05/_search? -d'
 {
   "query": {
     "filtered": {
@@ -12,8 +12,8 @@ curl -XGET http://libraryweb.kumc.edu:9200/logstash-2013.09.03,logstash-2013.09.
       "filter": {
         "range": {
           "@timestamp": {
-            "from": "2013-09-02T18:42:10.120Z",
-            "to": "2013-09-03T18:42:10.120Z"
+            "from": "2013-09-05T18:42:10.120Z",
+            "to": "2013-09-06T18:42:10.120Z"
           }
         }
       }
