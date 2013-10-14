@@ -1,31 +1,5 @@
-#curl -XPUT 'http://libraryweb.kumc.edu:9200/_river/logstash/_meta' -d '{
-#    "type" : "rabbitmq",
-#    "rabbitmq" : {
-#        "host" : "libraryweb",
-#        "port" : 5672,
-#        "user" : "guest",
-#        "pass" : "guest",
-#        "vhost" : "/",
-#        "queue" : "elasticsearch",
-#        "exchange" : "elasticsearch",
-#        "routing_key" : "logstash.#",
-#        "exchange_declare" : true,
-#        "exchange_type" : "direct",
-#        "exchange_durable" : true,
-#        "queue_declare" : true,
-#        "queue_bind" : true,
-#        "queue_durable" : true,
-#        "queue_auto_delete" : false,
-#        "heartbeat" : "30m"
-#    },
-#    "index" : {
-#        "bulk_size" : 100,
-#        "bulk_timeout" : "10ms",
-#        "ordered" : false
-#    }
-#}'
 
-curl -XPUT http://libraryweb.kumc.edu:9200/_template/logstash_per_index -d '
+curl -XPUT http://localhost:9200/_template/logstash_per_index -d '
 {
     "template" : "logstash*",
     "settings" : {
@@ -67,13 +41,6 @@ curl -XPUT http://libraryweb.kumc.edu:9200/_template/logstash_per_index -d '
                                     "region_name" : { "type": "string", "index": "not_analyzed" },
                                     "timezone" : { "type": "string", "index": "not_analyzed" }
                             }
-                        },
-                        "target_host" : {
-                          "type" : "multi_field",
-                          "fields" : {
-                             "target_host" : {"type" : "string", "index" : "analyzed"},
-                             "target_host_untouched" : {"type" : "string", "index" : "not_analyzed"}
-                          }
                         }
                     }
                },

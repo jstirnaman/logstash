@@ -1,14 +1,14 @@
-curl -XPUT 'http://libraryweb.kumc.edu:9200/_river/logstash/_meta' -d '{
+curl -XPUT 'localhost:9200/_river/logstash/_meta' -d '{
     "type" : "rabbitmq",
     "rabbitmq" : {
-        "host" : "libraryweb",
+        "host" : "localhost",
         "port" : 5672,
         "user" : "guest",
         "pass" : "guest",
         "vhost" : "/",
         "queue" : "elasticsearch",
         "exchange" : "elasticsearch",
-        "routing_key" : "logstash.#",
+        "routing_key" : "logstash#",
         "exchange_declare" : true,
         "exchange_type" : "direct",
         "exchange_durable" : true,
@@ -24,4 +24,3 @@ curl -XPUT 'http://libraryweb.kumc.edu:9200/_river/logstash/_meta' -d '{
         "ordered" : false
     }
 }'
-
